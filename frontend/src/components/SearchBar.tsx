@@ -29,6 +29,7 @@ const SearchBar = () => {
   });
 
   const handleFilter = (e) => {
+    e.preventDefault();
     const searchWord = e.target.value;
 
     if(searchWord === '') setFilteredData([]);
