@@ -30,7 +30,8 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
 
     useEffect(() => {
         if(filteredData){
-            setFiltered(filteredData);  
+            setFiltered(filteredData);
+            setLoading(false);  
         }
 
         if(unfilteredData) {
