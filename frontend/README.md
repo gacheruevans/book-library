@@ -17,7 +17,7 @@ The view should have the following features:-
 ## How to run the program.
 
 Install node packages.
-```npm install``
+```npm install```
 
 Run program
 ```npm run dev```
