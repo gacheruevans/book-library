@@ -1,0 +1,39 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.search {
+  position: relative;
+  display: grid;
+
+  width: 100%;
+  margin: 0 0 3rem 0;
+}
+.search_component {
+  display: flex;
+  margin: 40px auto;
+}
+
+.books_component {
+  position: relative;
+  display: flex;
+  margin: 4rem auto;
+  width: 100%;
+}
+
+.readinglist {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 18px;
+
+  @media only screen and (max-width: 768px) {
+    position: relative;
+    width: fit-content;
+    top: 0;
+    margin: 0 auto;
+    right:unset;
+  }
+}
