@@ -65,9 +65,6 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
                             </Grid>
                         </Grid>
                     </Grid>
-                    <div className='loadMore'>
-                        { loading && <ProgressBar /> }
-                    </div>
                 </> 
             )
            :

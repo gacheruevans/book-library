@@ -17,8 +17,7 @@
 }
 
 .search_compoonent-grid {
-  display: relative;
-  /* height: 1220px; */
+  position: relative;
   overflow: hidden;
 }
 
