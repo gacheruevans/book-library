@@ -16,8 +16,18 @@ The view should have the following features:-
 
 ## How to run the program.
 
+## Backend
+Install node packages.
+```npm install```
+
+Run program
+```npm run start```
+
+## Frontend
 Install node packages.
 ```npm install```
 
 Run program
 ```npm run dev```
+
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -29,10 +29,12 @@ const SearchBar = () => {
   });
 
   const handleFilter = (e) => {
-    e.preventDefault();
     const searchWord = e.target.value;
-
-    if(searchWord === '') setFilteredData([]);
+   
+    if(e.key === 'Enter') {
+      e.preventDefault();
+      if(searchWord === '') setFilteredData([]);
+    }
     
     const newFilter = books.filter(({ title }) => 
       title.toLowerCase().includes(searchWord.toLowerCase())

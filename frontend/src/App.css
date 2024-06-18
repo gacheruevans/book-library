@@ -16,6 +16,12 @@
   margin: 40px auto;
 }
 
+.search_compoonent-grid {
+  display: relative;
+  /* height: 1220px; */
+  overflow: hidden;
+}
+
 .books_component {
   position: relative;
   display: flex;
@@ -36,4 +42,10 @@
     margin: 0 auto;
     right:unset;
   }
+}
+.loadMore {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 90%;
 }
