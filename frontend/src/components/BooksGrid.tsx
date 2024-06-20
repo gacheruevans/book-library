@@ -21,8 +21,8 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
         if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.offsetHeight) {
             setLoading(true);
             setTimeout( () => {
-                setVisible((prevValue) => prevValue + 12);
-            },600)
+                setVisible((prevValue) => prevValue + 8);
+            },800)
             
         }
         return () => window.removeEventListener("scroll", handleScroll);
@@ -83,6 +83,10 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
                     </Grid>
                 </Grid>
             </Grid>
+            <div className='loadmore'>
+                {loading && <ProgressBar/>}
+            </div>
+            
         </div> 
     );    
 }
