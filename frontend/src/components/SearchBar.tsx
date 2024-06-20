@@ -13,12 +13,20 @@ import {useQuery} from '@apollo/client';
 import {LOAD_BOOKS} from '../GraphQl/Queries';
 
 import BooksGrid from './BooksGrid';
+import Typography from '@mui/material/Typography';
 
-const SearchBar = () => {
-  const [focus, setFocus] = useState(500);
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  readingLevel: string;
+}
+
+const SearchBar: React.FC = () => {
+  const [focus, setFocus] = useState<number>(500);
   const [filteredData, setFilteredData] = useState([]);
-  const { loading, error, data } = useQuery(LOAD_BOOKS);
-  const [books, setBooks] = useState([]);
+  const { loading, error, data } = useQuery<{ books: Book[] }>(LOAD_BOOKS);
+  const [books, setBooks] = useState<Book[]>([]);
 
   const options = books.map((option) => {
     const firstLetter = option.readingLevel.toUpperCase();
@@ -48,7 +56,7 @@ const SearchBar = () => {
       setBooks(data.books);
     }
   }, [data]);
-  
+
   return (
     <>
       <div className='search_component'>
@@ -100,7 +108,15 @@ const SearchBar = () => {
         />
       </div>
       <div className="books_component">
-        { 
+        {
+          error ? 
+          (
+            <div className='error_div'>
+              <Typography variant="h6" sx={{color:'#F76434'}} component="h2">
+                Internal Server Error: {error.message} books data ensure backend server is up
+              </Typography>
+            </div>
+          ) :
           !loading && ( <BooksGrid filteredData={filteredData} unfilteredData={books}/> )
         }
       </div>
