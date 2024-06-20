@@ -29,72 +29,62 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
     };
 
     useEffect(() => {
-        if(filteredData){
+        if(filteredData) {
             setFiltered(filteredData);
             setLoading(false);  
         }
-
         if(unfilteredData) {
             setUnfiltered(unfilteredData);
-            setLoading(false);
+            setLoading(false);  
         }
 
         window.addEventListener("scroll", handleScroll);
         
     }, [filteredData, unfilteredData]);
-    
-    return (
+   
+    return(   
         <div className="search_compoonent-grid">
-        { filtered.length > 0 ?
-            (   <>
-                    <Typography variant="h5" sx={{color: '#FAAD00'}}>Filtered results...</Typography>
-                    <Grid sx={{ flexGrow: 1 }} container spacing={2} >
-                        <Grid item xs={12}>
-                            <Grid container justifyContent="center" spacing={1}>
-                            {filtered.slice(0, visible).map((book) => (
-                                <Grid key={ uuidv4()} item>
-                                    <BookCard 
-                                        key={uuidv4()} 
-                                        title={book.title} 
-                                        author={book.author} 
-                                        image={book.coverPhotoURL}
-                                        readingLevel={book.readingLevel}
-                                    />
-                                </Grid>
-                            ))}
+            {
+            filtered.length == 0 ? 
+                (<Typography variant="h5" sx={{color: '#28B8B8'}}>All Books</Typography>) 
+            :
+                (<Typography variant="h5" sx={{color: '#FAAD00'}}>Filtered Books</Typography>)
+            }
+            
+            <Grid sx={{ flexGrow: 1 }} container spacing={2} >
+                <Grid item xs={12}>
+                    <Grid container justifyContent="center" spacing={1}>
+                    { 
+                    filtered.length == 0 ?
+                        unfiltered.slice(0, visible).map((book) => (
+                            <Grid key={ uuidv4()} item>
+                                <BookCard 
+                                    key={uuidv4()} 
+                                    title={book.title} 
+                                    author={book.author} 
+                                    image={book.coverPhotoURL}
+                                    readingLevel={book.readingLevel}
+                                />
                             </Grid>
-                        </Grid>
-                    </Grid>
-                </> 
-            )
-           :
-           (   <>
-                    <Typography variant="h5" sx={{color: '#28B8B8'}}>All Books</Typography>
-                    <Grid sx={{ flexGrow: 1 }} container spacing={2} >
-                        <Grid item xs={12}>
-                            <Grid container justifyContent="center" spacing={1}>
-                            {unfiltered.slice(0, visible).map((book) => (
-                                <Grid key={ uuidv4()} item>
-                                    <BookCard 
-                                        key={uuidv4()} 
-                                        title={book.title} 
-                                        author={book.author} 
-                                        image={book.coverPhotoURL}
-                                        readingLevel={book.readingLevel}
-                                    />
-                                </Grid>
-                            ))}
+                        ))
+                        :
+                        filtered.slice(0, visible).map((book) => (
+                            <Grid key={ uuidv4()} item>
+                                <BookCard 
+                                    key={uuidv4()} 
+                                    title={book.title} 
+                                    author={book.author} 
+                                    image={book.coverPhotoURL}
+                                    readingLevel={book.readingLevel}
+                                />
                             </Grid>
-                        </Grid>
+                        ))
+                    }
                     </Grid>
-                    <div className='loadMore'>
-                        { loading && <ProgressBar /> }
-                    </div>
-                </> 
-            )
-        }
-        </div>
-    ); 
+                </Grid>
+            </Grid>
+        </div> 
+    );    
 }
 
 export default BooksGrid

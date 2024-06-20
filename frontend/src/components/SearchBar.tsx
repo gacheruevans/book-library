@@ -36,8 +36,8 @@ const SearchBar = () => {
       if(searchWord === '') setFilteredData([]);
     }
     
-    const newFilter = books.filter(({ title }) => 
-      title.toLowerCase().includes(searchWord.toLowerCase())
+    const newFilter = books.filter((book) => 
+      book.title.toLowerCase().includes(searchWord.toLowerCase())
     );
     setFilteredData(newFilter);
   };

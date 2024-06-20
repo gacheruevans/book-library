@@ -45,10 +45,10 @@ const BookCard: React.FC<BookCardProps> = ({ author, title, image, readingLevel 
 
   return (
     <>
-      <Card sx={{ maxWidth: 250, margin:'1rem', position:"relative" }}>
+      <Card sx={{ maxWidth: 250, maxHeight:300, margin:'1rem', position:"relative" }}>
       <CardActions sx={{
         position:"absolute", 
-        right: "10px", 
+        right: "10px",
        }}>
         <IconButton 
           onClick={addToReadingList}
@@ -72,11 +72,11 @@ const BookCard: React.FC<BookCardProps> = ({ author, title, image, readingLevel 
         image={image}
         alt="book image"
       />
-      <CardContent>
-        <Typography gutterBottom variant="subtitle1" color="#28B8B8" component="div">
+      <CardContent sx={{backgroundColor: 'transparent'}}>
+        <Typography gutterBottom variant="subtitle3" color="#28B8B8" component="div">
           {title}
         </Typography>
-        <Typography variant="subtitle2" color="#F76434">
+        <Typography variant="subtitle3" color="#F76434">
           by {author}
         </Typography>
       </CardContent>
