@@ -5,6 +5,7 @@ import {v4 as uuidv4 } from 'uuid';
 import BookCard from './BookCard';
 import Typography from '@mui/material/Typography';
 import ProgressBar from './ProgressBar';
+import { Divider } from '@mui/material';
 
 interface BookGridProps {
     filteredData : object[] | undefined; 
@@ -46,11 +47,19 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
         <div className="search_compoonent-grid">
             {
             filtered.length == 0 ? 
-                (<Typography variant="h5" sx={{color: '#28B8B8'}}>All books</Typography>) 
+            (
+                <>
+                    <Typography variant="h5" sx={{color: '#28B8B8'}}>All books</Typography>
+                </>
+            ) 
             :
-                (<Typography variant="h5" sx={{color: '#FAAD00'}}>Filtered books</Typography>)
+            (
+                <>
+                    <Typography variant="h5" sx={{color: '#FAAD00'}}>Filtered books</Typography>
+                </>
+            )
             }
-            
+            <Divider />
             <Grid sx={{ flexGrow: 1 }} container spacing={2} >
                 <Grid item xs={12}>
                     <Grid container justifyContent="center" spacing={1}>
