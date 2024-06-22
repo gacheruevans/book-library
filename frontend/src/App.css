@@ -3,6 +3,8 @@
   width: 100%;
   margin: 0px auto;
   padding: 2rem;
+
+  button:focus { outline: none !important;;}
 }
 
 .search {
@@ -55,4 +57,10 @@
   justify-content: center;
   margin: 0 auto;
   width: 90%;
+}
+
+.footer {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
 }

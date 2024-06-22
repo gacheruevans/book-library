@@ -45,28 +45,36 @@ const BookCard: React.FC<BookCardProps> = ({ author, title, image, readingLevel 
 
   return (
     <>
+      <IconButton 
+          onClick={addToReadingList}
+          sx={{ 
+            backgroundColor:"#FAAD00",
+            buttonFocus: { border: "none"},
+            border:"1px solid #FABD33",
+            position: "relative",
+            left:'240px',
+            top:'40px',
+            zIndex: '1',
+            color: '#FFFFFF',
+            ":hover": {
+              border:"1px solid #4AA088",
+              backgroundColor: "#28B8B8",
+            }
+          }} 
+          size="small"
+          edge="end"
+          aria-label='add to reading list'
+          >
+          <PlaylistAddRounded />
+      </IconButton>
       <Card sx={{ maxWidth: 250, maxHeight:300, margin:'1rem', position:"relative" }}>
       <CardActions sx={{
         position:"absolute", 
         right: "10px",
        }}>
-        <IconButton 
-          onClick={addToReadingList}
-          sx={{ 
-            backgroundColor:"#4AA088", 
-            color: '#FFFFFF',  
-            p: 1.5,
-            ":hover": {
-              backgroundColor: "#28B8B8",
-            }
-          }} 
-          edge='end' 
-          aria-label='add to reading list'
-          >
-          <PlaylistAddRounded />
-        </IconButton>
       </CardActions>
       <CardMedia
+        loading="lazy"
         component="img"
         height="194"
         image={image}

@@ -3,6 +3,7 @@ import ReadingList from "./components/ReadingList";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import './App.css';
+import Footer from "./components/Footer";
 
 const THEME = createTheme({
    typography: {
@@ -11,7 +12,7 @@ const THEME = createTheme({
     "fontWeightLight": 300,
     "fontWeightRegular": 400,
     "fontWeightMedium": 500
-   }
+   },  
 });
 
 export default function App() {
@@ -20,6 +21,9 @@ export default function App() {
       <div className="App">
         <div className="readinglist"><ReadingList /></div>
         <div className="search"><Searchbar /></div>
+        <div className="footer">
+          <Footer />
+        </div>
       </div>
     </ThemeProvider>
   );

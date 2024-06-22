@@ -54,7 +54,7 @@ const ReadingList = () => {
          {
             readingList.length > 0 && 
                 (
-                    <Accordion sx={{zIndex: 1}}>
+                    <Accordion sx={{zIndex: 2}}>
                         <AccordionSummary
                             sx={{border:"1px solid #5ACCCC"}}
                             expandIcon={readingList.length > 0 && <ExpandMoreIcon />}

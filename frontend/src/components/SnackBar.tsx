@@ -12,17 +12,16 @@ interface SnackBarProps {
 const SnackBar: React.FC<SnackBarProps> = ({ openstate, title, onClick }) => {
   return (
     <>
-        <Snackbar  
+        <Snackbar
             anchorOrigin={{vertical:'top', horizontal:'center'}} 
             open={openstate} 
-            autoHideDuration={6000} 
+            autoHideDuration={2000} 
             onClose={onClick}
-        >
+        >   
             <Alert
                 onClose={onClick}
-                severity="success"
                 variant="filled"
-                sx={{ width: '100%' }}
+                sx={{  backgroundColor: "#53C2C2", width: '100%' }}
             >
             <AlertTitle>Success</AlertTitle>
             You have added `{title}` to your reading list.

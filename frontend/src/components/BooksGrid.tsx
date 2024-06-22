@@ -46,9 +46,9 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
         <div className="search_compoonent-grid">
             {
             filtered.length == 0 ? 
-                (<Typography variant="h5" sx={{color: '#28B8B8'}}>All Books</Typography>) 
+                (<Typography variant="h5" sx={{color: '#28B8B8'}}>All books</Typography>) 
             :
-                (<Typography variant="h5" sx={{color: '#FAAD00'}}>Filtered Books</Typography>)
+                (<Typography variant="h5" sx={{color: '#FAAD00'}}>Filtered books</Typography>)
             }
             
             <Grid sx={{ flexGrow: 1 }} container spacing={2} >
@@ -59,7 +59,7 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
                         unfiltered.slice(0, visible).map((book) => (
                             <Grid key={ uuidv4()} item>
                                 <BookCard 
-                                    key={uuidv4()} 
+                                    key={book.id} 
                                     title={book.title} 
                                     author={book.author} 
                                     image={book.coverPhotoURL}

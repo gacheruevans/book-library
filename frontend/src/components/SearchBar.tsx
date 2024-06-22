@@ -64,11 +64,16 @@ const SearchBar: React.FC = () => {
           id="book-search"
           options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
           autoHighlight
+          noOptionsText={ error ? 'No options' : 'search for something else'}
           groupBy={(option) => option.readingLevel}
           getOptionLabel={(option) => option.title}
           sx={{ width:`${focus}px`, border: 'none'}}
           renderOption={(props, option) => (
-            <Box key={uuidv4()} component="li" sx={{ '& > img': { mr: 1, flexShrink: 0 }}} {...props}>
+            <Box 
+              key={uuidv4()+ option.id} 
+              component="li" 
+              sx={{ '& > img': { mr: 1, flexShrink: 0 }}} 
+              {...props}>
               <img  
                 loading="lazy"
                 width="60"

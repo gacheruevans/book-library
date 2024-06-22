@@ -4,7 +4,11 @@ import Box from '@mui/material/Box';
 const ProgressBar = () => {
   return (
     <Box sx={{ display: 'flex' }}>
-      <CircularProgress />
+      <CircularProgress 
+        sx={{
+          color: (theme) => (theme.palette.mode === 'light' ? '#5ACCCC' : '#CFFAFA'),
+        }}
+      />
     </Box>
   );
 }
