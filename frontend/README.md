@@ -1,6 +1,11 @@
 ### Description.
 Search for children's books and assign them to a reading list.
 
+https://github.com/gacheruevans/ello-takehome-assessment/assets/23238156/c0515468-6ed1-4f59-a005-7c704867e86e
+
+
+
+
 ### Features.
 1. A search bar that allows users to search for books by title.
 2. A list of search results that displays the book title, author, and a button to add the book to the students reading list.
