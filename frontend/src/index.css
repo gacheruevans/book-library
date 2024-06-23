@@ -15,6 +15,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -48,6 +52,7 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
@@ -58,11 +63,11 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #335C6E;
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #28B8B8;
   }
   button {
     background-color: #f9f9f9;

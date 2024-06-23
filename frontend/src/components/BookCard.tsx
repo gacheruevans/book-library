@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import {CardActions } from '@mui/material';
+import {CardActions, Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material';
 import { PlaylistAddRounded } from '@mui/icons-material';
 
 
@@ -19,6 +19,20 @@ interface BookCardProps {
   image: string;
   readingLevel: string;
 }
+
+const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#28B8B8",
+    color: '#FFFFFF',
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+  [`& .${tooltipClasses.arrow}`]: {
+    color: "#28B8B8",
+  },
+}));
 
 const BookCard: React.FC<BookCardProps> = ({ author, title, image, readingLevel }) => {
   const[createReadingList, {error}] = useMutation(CREATE_READING_LIST);
@@ -45,28 +59,34 @@ const BookCard: React.FC<BookCardProps> = ({ author, title, image, readingLevel 
 
   return (
     <>
-      <IconButton 
-          onClick={addToReadingList}
-          sx={{ 
-            backgroundColor:"#FAAD00",
-            buttonFocus: { border: "none"},
-            border:"1px solid #FABD33",
-            position: "relative",
-            left:'240px',
-            top:'40px',
-            zIndex: '1',
-            color: '#FFFFFF',
-            ":hover": {
-              border:"1px solid #4AA088",
-              backgroundColor: "#28B8B8",
-            }
-          }} 
-          size="small"
-          edge="end"
-          aria-label='add to reading list'
-          >
-          <PlaylistAddRounded />
-      </IconButton>
+      <CustomTooltip 
+        title="Add to reading list" 
+        placement="top"
+        arrow
+      >
+        <IconButton 
+            onClick={addToReadingList}
+            sx={{ 
+              backgroundColor:"#FAAD00",
+              buttonFocus: { border: "none"},
+              border:"1px solid #FABD33",
+              position: "relative",
+              left:'240px',
+              top:'40px',
+              zIndex: '1',
+              color: '#FFFFFF',
+              ":hover": {
+                border:"1px solid #4AA088",
+                backgroundColor: "#28B8B8",
+              }
+            }} 
+            size="small"
+            edge="end"
+            aria-label='add to reading list'
+            >
+            <PlaylistAddRounded />
+        </IconButton>
+      </CustomTooltip>
       <Card sx={{ maxWidth: 250, maxHeight:300, margin:'1rem', position:"relative" }}>
       <CardActions sx={{
         position:"absolute", 
