@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import ProgressBar from './ProgressBar';
 import { Divider, IconButton, Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material';
 import { KeyboardControlKeyRounded } from '@mui/icons-material';
+import Grow from '@mui/material/Grow';
 
 interface BookGridProps {
     filteredData : object[] | undefined; 
@@ -52,7 +53,7 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
             setTimeout( () => {
                 setVisible((prevValue:number) => prevValue + 4);
                 setTrigger(true);
-            },600)
+            },500)
         }
         return () => window.removeEventListener("scroll", handleScroll);
     };
@@ -60,11 +61,11 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
     useEffect(() => {
         if(filteredData) {
             setFiltered(filteredData);
-            setLoading(false);  
+            setLoading(false);
         }
         if(unfilteredData) {
             setUnfiltered(unfilteredData);
-            setLoading(false);  
+            setLoading(false);
         }
 
         window.addEventListener("scroll", handleScroll);
@@ -84,18 +85,28 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
                     { 
                     filtered.length == 0 ?
                         unfiltered.slice(0, visible).map((book) => (
-                            <Grid key={ uuidv4()} item>
-                                <BookCard 
-                                    key={book.id} 
-                                    title={book.title} 
-                                    author={book.author} 
-                                    image={book.coverPhotoURL}
-                                    readingLevel={book.readingLevel}
-                                />
-                            </Grid>
+                            <Grow
+                                in={true}
+                                style={{ 
+                                    transformOrigin: '0 0 0', 
+                                    timeout: 1000, 
+                                    transitionTimingFunction: 'ease-in-out' 
+                                }}
+                            >
+                                <Grid key={ uuidv4()} item>
+                                    <BookCard 
+                                        key={book.id} 
+                                        title={book.title} 
+                                        author={book.author} 
+                                        image={book.coverPhotoURL}
+                                        readingLevel={book.readingLevel}
+                                    />
+                                </Grid>
+                            </Grow>
                         ))
                         :
                         filtered.slice(0, visible).map((book) => (
+
                             <Grid key={ uuidv4()} item>
                                 <BookCard 
                                     key={uuidv4()} 
@@ -103,7 +114,6 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
                                     author={book.author} 
                                     image={book.coverPhotoURL}
                                     readingLevel={book.readingLevel}
-                                    customtooltip={CustomTooltip}
                                 />
                             </Grid>
                         ))
@@ -123,8 +133,8 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
                                 borderRadius:'10%',
                                 color: '#FFFFFF',
                                 ":hover": {
-                                border:"1px solid #4AA088",
-                                backgroundColor: "#28B8B8",
+                                    border:"1px solid #4AA088",
+                                    backgroundColor: "#28B8B8",
                                 }
                             }} 
                             size="small"
@@ -136,7 +146,7 @@ const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => 
                     </CustomTooltip>
                 </div>
             }
-            <div className='loadmore'>
+            <div className="infiniteScroll">
                 {loading && <ProgressBar/>}
             </div>
             <Divider sx={{ margin:'40px 0 20px 0'}}/>

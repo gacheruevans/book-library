@@ -14,6 +14,7 @@ const SnackBar: React.FC<SnackBarProps> = ({ openstate, title, onClick }) => {
     <>
         <Snackbar
             anchorOrigin={{vertical:'top', horizontal:'center'}} 
+            sx={{marginTop: '120px'}}
             open={openstate} 
             autoHideDuration={2000} 
             onClose={onClick}

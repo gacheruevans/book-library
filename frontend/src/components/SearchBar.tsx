@@ -27,6 +27,7 @@ const SearchBar: React.FC = () => {
   const [filteredData, setFilteredData] = useState([]);
   const { loading, error, data } = useQuery<{ books: Book[] }>(LOAD_BOOKS);
   const [books, setBooks] = useState<Book[]>([]);
+  const [trigger, setTrigger] = useState(false);
 
   const options = books.map((option) => {
     const firstLetter = option.readingLevel.toUpperCase();
@@ -38,7 +39,7 @@ const SearchBar: React.FC = () => {
 
   const handleFilter = (e) => {
     const searchWord = e.target.value;
-   
+    
     if(e.key === 'Enter') {
       e.preventDefault();
       if(searchWord === '') setFilteredData([]);

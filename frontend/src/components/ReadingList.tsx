@@ -20,6 +20,7 @@ import {DELETE_FROM_READING_LIST} from '../GraphQl/Mutations';
 import { useMutation } from '@apollo/client';
 
 import ReadingListBadge from './Badge';
+import { Grow } from '@mui/material';
 
 const ReadingList = () => {
     const {loading, data, refetch } = useQuery(LOAD_READING_LIST, {pollInterval: 500,});
@@ -56,7 +57,7 @@ const ReadingList = () => {
                 (
                     <Accordion sx={{zIndex: 2}}>
                         <AccordionSummary
-                            sx={{border:"1px solid #5ACCCC"}}
+                            sx={{border:"2px solid #5ACCCC"}}
                             expandIcon={readingList.length > 0 && <ExpandMoreIcon />}
                             aria-controls="panel1-content"
                             id="panel1-header"
@@ -67,10 +68,19 @@ const ReadingList = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                             <List sx={{ width: '100%', maxWidth: 340, bgcolor: 'background.paper', overflow: 'auto', maxHeight: 300}}>
-                            {readingList.map((book) => (
+                            {readingList.map((book, index) => (
                                 <>
+                                <Grow
+                                    in={true}
+                                    style={{ 
+                                        transformOrigin: '0 0 0', 
+                                        timeout: 1000, 
+                                        transitionTimingFunction: 'ease-in-out' 
+                                    }}
+                                >
                                     <ListItem 
-                                        key={book?.id + book.title}
+                                        key={book.title}
+
                                         alignItems="flex-start"
                                         secondaryAction={
                                             <IconButton 
@@ -83,7 +93,7 @@ const ReadingList = () => {
                                         }
                                     >
                                         <ListItemText
-                                            sx={{color: "#335C6E"}}
+                                            sx={{ color: "#335C6E" }}
                                             primary={book?.title}
                                             secondary= {
                                                 <React.Fragment>
@@ -95,13 +105,22 @@ const ReadingList = () => {
                                                 >
                                                 by    
                                                 </Typography>
-                                                {book?.author}
+                                                <Typography
+                                                    sx={{ display: 'inline', padding: '4px' }}
+                                                    component="span"
+                                                    variant="body2"
+                                                    color="#F76434"   
+                                                >
+                                                    {book?.author}
+                                                </Typography>
+                                                
                                                 </React.Fragment>
                                             }
                                         />
                                     
                                     </ListItem>
-                                    <Divider key={book.id} component="li" />
+                                </Grow>
+                                    <Divider aria-hidden="true" key={book.id} component="li" sx={{border: '1px solid #5ACCCC'}} />
                                 </>
                                 ))}
                             </List>
