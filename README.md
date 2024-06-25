@@ -85,7 +85,7 @@ You can use this query to get the list of books to display in your frontend. You
 ### Solution.
 Search for children's books and assign them to a reading list.
 
-https://github.com/gacheruevans/ello-takehome-assessment/assets/23238156/c0515468-6ed1-4f59-a005-7c704867e86e
+https://github.com/gacheruevans/ello-takehome-assessment/assets/23238156/ffbe9167-69dd-4ec2-b76f-60eab3718116
 
 
 ### Features.
