@@ -22,5 +22,12 @@ Additional nice to haves.
 Install node packages.
 ```npm install```
 
+Run project
+```npm run dev```
 
+## Backend
+Install node packages.
+```npm install```
 
+Run project
+```npm run start```
