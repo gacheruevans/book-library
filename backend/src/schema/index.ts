@@ -1,4 +1,15 @@
 export const typeDefs = `#graphql
+  enum UserRole {
+    TEACHER
+    STUDENT
+  }
+
+  enum ReadingStatus {
+    WANT_TO_READ
+    READING
+    COMPLETED
+  }
+
   type Book {
     id: ID!
     title: String!
@@ -7,29 +18,62 @@ export const typeDefs = `#graphql
     readingLevel: String!
   }
 
-  type ReadingList {
+  type User {
     id: ID!
-    title: String!
-    author: String!
+    name: String!
+    email: String!
+    role: UserRole!
+    age: Int
+    avatarUrl: String
+    readingGroupId: String
+    readingGroup: ReadingGroup
+  }
+
+  type ReadingGroup {
+    id: ID!
+    name: String!
+    teacherId: String!
+    minAge: Int!
+    maxAge: Int!
+    ageRangeLabel: String!
     readingLevel: String!
-    coverPhotoURL: String
+    description: String
+    teacher: User
+    books: [Book!]!
+    students: [User!]!
+  }
+
+  type StudentBookProgress {
+    studentId: ID!
+    bookId: ID!
+    status: ReadingStatus!
+    updatedAt: String!
   }
 
   type Query {
     books(title: String): [Book!]!
     book(id: ID!): Book
-    readinglistbooks: [ReadingList!]!
+    users(role: UserRole): [User!]!
+    user(id: ID!): User
+    readingGroups(readingLevel: String): [ReadingGroup!]!
+    readingGroup(id: ID!): ReadingGroup
+    studentAssignedBooks(studentId: ID): [Book!]!
+    studentProgress(studentId: ID!): [StudentBookProgress!]!
   }
 
   type Mutation {
-    addBook(book: AddBookToReadingList!): [ReadingList!]!
-    deleteBook(id: ID!): [ReadingList!]
-  }
-
-  input AddBookToReadingList {
-    title: String!
-    author: String!
-    readingLevel: String!
-    coverPhotoURL: String
+    login(email: String!): User!
+    createReadingGroup(
+      name: String!
+      minAge: Int
+      maxAge: Int
+      readingLevel: String
+      description: String
+    ): ReadingGroup!
+    deleteReadingGroup(id: ID!): Boolean!
+    assignBookToReadingGroup(groupId: ID!, bookId: ID!): ReadingGroup!
+    removeBookFromReadingGroup(groupId: ID!, bookId: ID!): ReadingGroup!
+    assignStudentToReadingGroup(groupId: ID!, studentId: ID!): ReadingGroup!
+    updateStudentBookStatus(studentId: ID!, bookId: ID!, status: ReadingStatus!): StudentBookProgress!
   }
 `;

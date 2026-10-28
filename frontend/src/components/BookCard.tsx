@@ -7,12 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useMutation } from '@apollo/client';
-import { CREATE_READING_LIST } from '../GraphQl/Mutations';
-import { LOAD_READING_LIST } from '../GraphQl/Queries';
-import SnackBar from './SnackBar';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import AssignBookDialog from './Teacher/AssignBookDialog';
+import { useAuth } from '../context/AuthContext';
+import { Book } from '../types';
 
 interface BookCardProps {
   id?: string;
@@ -20,67 +18,24 @@ interface BookCardProps {
   title: string;
   image: string;
   readingLevel: string;
-  isInReadingList?: boolean;
 }
 
 const BookCard: React.FC<BookCardProps> = ({
+  id,
   author,
   title,
   image,
   readingLevel,
-  isInReadingList = false,
 }) => {
-  const [snackbarState, setSnackbarState] = useState<{
-    open: boolean;
-    message: string;
-    severity: 'success' | 'warning' | 'error';
-  }>({
-    open: false,
-    message: '',
-    severity: 'success',
-  });
+  const { isTeacher } = useAuth();
+  const [isAssignDialogOpen, setIsAssignDialogOpen] = useState<boolean>(false);
 
-  const [createReadingList, { loading: adding }] = useMutation(CREATE_READING_LIST, {
-    refetchQueries: [{ query: LOAD_READING_LIST }],
-  });
-
-  const handleAdd = async () => {
-    if (isInReadingList) {
-      setSnackbarState({
-        open: true,
-        message: `"${title}" is already on your reading list.`,
-        severity: 'warning',
-      });
-      return;
-    }
-
-    try {
-      await createReadingList({
-        variables: {
-          title,
-          author,
-          readingLevel,
-          coverPhotoURL: image,
-        },
-      });
-      setSnackbarState({
-        open: true,
-        message: `Added "${title}" to your reading list.`,
-        severity: 'success',
-      });
-    } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to add book to reading list.';
-      setSnackbarState({
-        open: true,
-        message: errorMessage,
-        severity: 'error',
-      });
-    }
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbarState((prev) => ({ ...prev, open: false }));
+  const currentBookObject: Book = {
+    id: id || '1',
+    title,
+    author,
+    readingLevel,
+    coverPhotoURL: image,
   };
 
   return (
@@ -110,55 +65,38 @@ const BookCard: React.FC<BookCardProps> = ({
             top: 10,
             left: 10,
             zIndex: 2,
-            backgroundColor: 'rgba(51, 92, 110, 0.9)',
+            backgroundColor: 'rgba(51, 92, 110, 0.92)',
             color: '#ffffff',
-            fontWeight: 700,
+            fontWeight: 800,
             fontSize: '0.75rem',
             backdropFilter: 'blur(4px)',
           }}
         />
 
-        {/* Add/Added Action Button Overlay */}
-        <Tooltip
-          title={isInReadingList ? 'Already in reading list' : 'Add to reading list'}
-          placement="top"
-          arrow
-        >
-          <span>
+        {/* Teacher Action: Assign to Reading Group */}
+        {isTeacher && (
+          <Tooltip title="Assign to Reading Group" placement="top" arrow>
             <IconButton
-              onClick={handleAdd}
-              disabled={adding}
-              aria-label={
-                isInReadingList
-                  ? `"${title}" is already in reading list`
-                  : `Add "${title}" to reading list`
-              }
+              onClick={() => setIsAssignDialogOpen(true)}
+              aria-label={`Assign "${title}" to reading group`}
+              size="small"
               sx={{
                 position: 'absolute',
                 top: 8,
                 right: 8,
                 zIndex: 2,
-                backgroundColor: isInReadingList ? '#28B8B8' : '#FAAD00',
+                backgroundColor: '#5ACCCC',
                 color: '#ffffff',
-                boxShadow: 2,
+                boxShadow: '0 2px 8px rgba(90, 204, 204, 0.4)',
                 '&:hover': {
-                  backgroundColor: isInReadingList ? '#1f9494' : '#e09b00',
-                },
-                '&.Mui-disabled': {
-                  backgroundColor: 'rgba(250, 173, 0, 0.5)',
-                  color: '#ffffff',
+                  backgroundColor: '#28B8B8',
                 },
               }}
-              size="small"
             >
-              {isInReadingList ? (
-                <CheckCircleIcon fontSize="small" />
-              ) : (
-                <PlaylistAddIcon fontSize="small" />
-              )}
+              <GroupAddIcon fontSize="small" />
             </IconButton>
-          </span>
-        </Tooltip>
+          </Tooltip>
+        )}
 
         {/* Book Cover Image */}
         <Box sx={{ position: 'relative', height: 210, overflow: 'hidden', backgroundColor: '#f0f4f6' }}>
@@ -226,12 +164,11 @@ const BookCard: React.FC<BookCardProps> = ({
         </CardContent>
       </Card>
 
-      <SnackBar
-        openstate={snackbarState.open}
-        title={title}
-        message={snackbarState.message}
-        severity={snackbarState.severity}
-        onClick={handleCloseSnackbar}
+      {/* Assign to Reading Group Dialog */}
+      <AssignBookDialog
+        open={isAssignDialogOpen}
+        onClose={() => setIsAssignDialogOpen(false)}
+        book={currentBookObject}
       />
     </>
   );

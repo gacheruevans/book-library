@@ -10,7 +10,7 @@ import './index.css';
  * - Normalized in-memory cache keyed by GraphQL entity `id`.
  */
 const client = new ApolloClient({
-  uri: import.meta.env.VITE_GRAPHQL_URI || 'http://localhost:4000/graphql',
+  uri: import.meta.env.VITE_GRAPHQL_URI || 'http://localhost:5000/',
   cache: new InMemoryCache(),
 });
 

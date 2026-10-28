@@ -14,7 +14,6 @@ import { Book } from '../types';
 
 interface BooksGridProps {
   books: Book[];
-  readingListTitles: Set<string>;
   isFilterActive: boolean;
   onResetFilter?: () => void;
 }
@@ -23,7 +22,6 @@ const PAGE_SIZE = 12;
 
 const BooksGrid: React.FC<BooksGridProps> = ({
   books,
-  readingListTitles,
   isFilterActive,
   onResetFilter,
 }) => {
@@ -143,7 +141,6 @@ const BooksGrid: React.FC<BooksGridProps> = ({
       {/* Book Grid */}
       <Grid container spacing={3} justifyContent="center">
         {visibleBooks.map((book) => {
-          const isAdded = readingListTitles.has(book.title.trim().toLowerCase());
           return (
             <Grid item key={book.id}>
               <BookCard
@@ -152,7 +149,6 @@ const BooksGrid: React.FC<BooksGridProps> = ({
                 author={book.author}
                 image={book.coverPhotoURL}
                 readingLevel={book.readingLevel}
-                isInReadingList={isAdded}
               />
             </Grid>
           );

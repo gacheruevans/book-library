@@ -12,9 +12,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useQuery } from '@apollo/client';
-import { LOAD_BOOKS, LOAD_READING_LIST } from '../GraphQl/Queries';
+import { LOAD_BOOKS } from '../GraphQl/Queries';
 import BooksGrid from './BooksGrid';
-import { Book, BooksQueryData, ReadingListQueryData } from '../types';
+import { Book, BooksQueryData } from '../types';
 
 const READING_LEVELS = ['ALL', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
@@ -28,15 +28,7 @@ const SearchBar: React.FC = () => {
     data: booksData,
   } = useQuery<BooksQueryData>(LOAD_BOOKS);
 
-  const { data: readingListData } = useQuery<ReadingListQueryData>(LOAD_READING_LIST);
-
   const books: Book[] = useMemo(() => booksData?.books || [], [booksData]);
-
-  // Set of titles currently on the reading list for O(1) lookup
-  const readingListTitles = useMemo(() => {
-    const list = readingListData?.readinglistbooks || [];
-    return new Set(list.map((item) => item.title.trim().toLowerCase()));
-  }, [readingListData]);
 
   // Autocomplete options grouped and ordered by reading level
   const autocompleteOptions = useMemo(() => {
@@ -244,7 +236,6 @@ const SearchBar: React.FC = () => {
       ) : (
         <BooksGrid
           books={filteredBooks}
-          readingListTitles={readingListTitles}
           isFilterActive={isFilterActive}
           onResetFilter={handleResetFilters}
         />

@@ -1,0 +1,63 @@
+import { User } from '../types';
+
+export const DEMO_PERSONAS: User[] = [
+  {
+    id: 'user-teacher-1',
+    name: 'Ms. Clara Vance',
+    email: 'clara@ello.com',
+    role: 'TEACHER',
+    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&h=120&q=80',
+  },
+  {
+    id: 'user-teacher-2',
+    name: 'Mr. David Sterling',
+    email: 'david@ello.com',
+    role: 'TEACHER',
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80',
+  },
+  {
+    id: 'user-student-2',
+    name: 'Leo Brooks',
+    email: 'leo@student.ello.com',
+    role: 'STUDENT',
+    age: 5,
+    readingGroupId: 'group-2',
+    avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&h=120&q=80',
+  },
+  {
+    id: 'user-student-1',
+    name: 'Maya Patel',
+    email: 'maya@student.ello.com',
+    role: 'STUDENT',
+    age: 3,
+    readingGroupId: 'group-1',
+    avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&h=120&q=80',
+  },
+  {
+    id: 'user-student-3',
+    name: 'Aria Wilson',
+    email: 'aria@student.ello.com',
+    role: 'STUDENT',
+    age: 7,
+    readingGroupId: 'group-3',
+    avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=120&h=120&q=80',
+  },
+  {
+    id: 'user-student-4',
+    name: 'Samir Gomez',
+    email: 'samir@student.ello.com',
+    role: 'STUDENT',
+    age: 9,
+    readingGroupId: 'group-4',
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&h=120&q=80',
+  },
+  {
+    id: 'user-student-5',
+    name: 'Elena Rostova',
+    email: 'elena@student.ello.com',
+    role: 'STUDENT',
+    age: 11,
+    readingGroupId: 'group-5',
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80',
+  },
+];

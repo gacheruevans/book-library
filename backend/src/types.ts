@@ -1,11 +1,5 @@
 /**
  * Shared domain types for the backend.
- *
- * WHY: Previously the `Book` interface was declared inline inside the resolvers
- * file and did not match either the GraphQL schema (which had no `id` on Book)
- * or the raw data (which had `coverPhotoURL` but no `id`). Keeping a single
- * source of truth for these shapes lets the compiler catch drift between the
- * data layer, the resolvers and the schema.
  */
 
 /** A book exactly as it appears in the static seed data (no id yet). */
@@ -21,20 +15,44 @@ export interface Book extends RawBook {
   id: string;
 }
 
-/** An entry in the teacher's reading list. */
-export interface ReadingListItem {
-  /** Unique id of the reading-list entry (used to delete it). */
+export type UserRole = 'TEACHER' | 'STUDENT';
+
+export type ReadingStatus = 'WANT_TO_READ' | 'READING' | 'COMPLETED';
+
+export interface User {
   id: string;
-  title: string;
-  author: string;
-  readingLevel: string;
-  coverPhotoURL?: string | null;
+  name: string;
+  email: string;
+  role: UserRole;
+  avatarUrl?: string;
+  age?: number;               // Specific to students (e.g. 5)
+  readingGroupId?: string;    // Student's assigned group id
 }
 
-/** Payload accepted by the `addBook` mutation. */
-export interface AddBookInput {
-  title: string;
-  author: string;
-  readingLevel: string;
-  coverPhotoURL?: string | null;
+export interface ReadingGroup {
+  id: string;
+  name: string;
+  teacherId: string;
+  minAge: number;
+  maxAge: number;
+  ageRangeLabel: string;      // e.g. "4–5 yrs"
+  readingLevel: string;       // e.g. "B"
+  description?: string;
+  bookIds: string[];          // IDs of assigned books
+  studentIds: string[];       // IDs of enrolled students
+}
+
+export interface StudentBookProgress {
+  studentId: string;
+  bookId: string;
+  status: ReadingStatus;
+  updatedAt: string;
+}
+
+export interface CreateReadingGroupInput {
+  name: string;
+  minAge?: number;
+  maxAge?: number;
+  readingLevel?: string;
+  description?: string;
 }
