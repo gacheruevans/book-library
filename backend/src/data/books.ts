@@ -1,5 +1,6 @@
-// eslint-disable-next-line prefer-const
-export let booksData = [
+import { RawBook } from '../types';
+
+export const booksData: ReadonlyArray<RawBook> = [
   {
     'title': 'Curious Princess and the Enchanted Garden',
     'author': 'Reese Smith',

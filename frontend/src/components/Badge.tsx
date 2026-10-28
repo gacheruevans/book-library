@@ -1,24 +1,32 @@
 import * as React from 'react';
 import Badge from '@mui/material/Badge';
-import LibraryBooks from '@mui/icons-material/LibraryBooks';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 
 interface ReadingListProps {
-  count: string;
+  count: number | string;
 }
 
-const ReadingListBadge: React.FC<ReadingListProps> = ({count}) => {
+const ReadingListBadge: React.FC<ReadingListProps> = ({ count }) => {
   return (
-    <Badge 
+    <Badge
       badgeContent={count}
-      sx={{color: "#335C6E", }}
+      color="secondary"
+      sx={{
+        mr: 1,
+        '& .MuiBadge-badge': {
+          backgroundColor: '#F76434',
+          color: '#ffffff',
+          fontWeight: 700,
+        },
+      }}
       anchorOrigin={{
         vertical: 'top',
-        horizontal: 'left',
+        horizontal: 'right',
       }}
     >
-      <LibraryBooks  sx={{color: "#335C6E"}} />
+      <LibraryBooksIcon sx={{ color: '#335C6E' }} />
     </Badge>
   );
-}
+};
 
-export default ReadingListBadge
+export default ReadingListBadge;

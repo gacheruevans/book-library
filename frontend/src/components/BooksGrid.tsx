@@ -1,157 +1,205 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Grid from '@mui/material/Grid';
-
-import {v4 as uuidv4 } from 'uuid';
-import BookCard from './BookCard';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import Tooltip from '@mui/material/Tooltip';
+import Zoom from '@mui/material/Zoom';
+import Button from '@mui/material/Button';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import BookCard from './BookCard';
 import ProgressBar from './ProgressBar';
-import { Divider, IconButton, Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material';
-import { KeyboardControlKeyRounded } from '@mui/icons-material';
-import Grow from '@mui/material/Grow';
+import { Book } from '../types';
 
-interface BookGridProps {
-    filteredData : object[] | undefined; 
-    unfilteredData: object[] | undefined;
+interface BooksGridProps {
+  books: Book[];
+  readingListTitles: Set<string>;
+  isFilterActive: boolean;
+  onResetFilter?: () => void;
 }
 
-const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: "#28B8B8",
-    color: '#FFFFFF',
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-  [`& .${tooltipClasses.arrow}`]: {
-    color: "#28B8B8",
-  },
-}));
+const PAGE_SIZE = 12;
 
-const BooksGrid: React.FC<BookGridProps> = ({ filteredData, unfilteredData}) => {
-    const [filtered, setFiltered] = useState([]);
-    const [unfiltered, setUnfiltered] = useState([]);
-    const [visible, setVisible] = useState(12);
-    const [loading, setLoading] = useState(false);
-    const [trigger, setTrigger] = useState(false);
+const BooksGrid: React.FC<BooksGridProps> = ({
+  books,
+  readingListTitles,
+  isFilterActive,
+  onResetFilter,
+}) => {
+  const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
+  const [showBackToTop, setShowBackToTop] = useState<boolean>(false);
 
-    const scrollBackTop = (event: React.MouseEvent<HTMLDivElement>) => {
-        const anchor = (
-            (event.target as HTMLDivElement).ownerDocument || document
-        ).querySelector('#back-to-top-anchor');
+  // Reset pagination count whenever the filtered book list changes
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [books]);
 
-        if (anchor) {
-            anchor.scrollIntoView({
-                block: 'center',
-            });
-        }
+  // Clean scroll handler with proper debounce and cleanup
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY;
+    setShowBackToTop(scrollY > 400);
+
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const isBottom = windowHeight + scrollY >= documentHeight - 200;
+
+    if (isBottom && !isLoadingMore && visibleCount < books.length) {
+      setIsLoadingMore(true);
+      setTimeout(() => {
+        setVisibleCount((prev) => Math.min(prev + 8, books.length));
+        setIsLoadingMore(false);
+      }, 350);
+    }
+  }, [isLoadingMore, visibleCount, books.length]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
+  }, [handleScroll]);
 
-    const handleScroll = () => {
-        if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.offsetHeight) {
-            setLoading(true);
-            setTimeout( () => {
-                setVisible((prevValue:number) => prevValue + 4);
-                setTrigger(true);
-            },500)
-        }
-        return () => window.removeEventListener("scroll", handleScroll);
-    };
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
-    useEffect(() => {
-        if(filteredData) {
-            setFiltered(filteredData);
-            setLoading(false);
-        }
-        if(unfilteredData) {
-            setUnfiltered(unfilteredData);
-            setLoading(false);
-        }
+  const visibleBooks = books.slice(0, visibleCount);
+  const hasMore = visibleCount < books.length;
 
-        window.addEventListener("scroll", handleScroll);
-        
-    }, [filteredData, unfilteredData]);
-   
-    return(   
-        <div className="search_compoonent-grid">
-            {
-                filtered.length == 0 ? (<Typography variant="h5" sx={{color: '#28B8B8'}}>All books</Typography>) :
-                (<Typography variant="h5" sx={{color: '#FAAD00'}}>Filtered books</Typography>)
-            }
-            <Divider id="back-to-top-anchor" />
-            <Grid sx={{ flexGrow: 1 }} container spacing={2} >
-                <Grid item xs={12}>
-                    <Grid container justifyContent="center" spacing={1}>
-                    { 
-                    filtered.length == 0 ?
-                        unfiltered.slice(0, visible).map((book) => (
-                            <Grow
-                                in={true}
-                                style={{ 
-                                    transformOrigin: '0 0 0', 
-                                    timeout: 1000, 
-                                    transitionTimingFunction: 'ease-in-out' 
-                                }}
-                            >
-                                <Grid key={ uuidv4()} item>
-                                    <BookCard 
-                                        key={book.id} 
-                                        title={book.title} 
-                                        author={book.author} 
-                                        image={book.coverPhotoURL}
-                                        readingLevel={book.readingLevel}
-                                    />
-                                </Grid>
-                            </Grow>
-                        ))
-                        :
-                        filtered.slice(0, visible).map((book) => (
+  if (books.length === 0) {
+    return (
+      <Box
+        sx={{
+          py: 8,
+          px: 2,
+          textAlign: 'center',
+          maxWidth: 480,
+          mx: 'auto',
+        }}
+      >
+        <MenuBookIcon sx={{ fontSize: 64, color: '#CFFAFA', mb: 2 }} />
+        <Typography variant="h6" sx={{ color: '#335C6E', fontWeight: 700, mb: 1 }}>
+          No books found
+        </Typography>
+        <Typography variant="body2" sx={{ color: '#7b95a2', mb: 3 }}>
+          {isFilterActive
+            ? 'We could not find any books matching your search or level criteria.'
+            : 'No books available at the moment.'}
+        </Typography>
+        {isFilterActive && onResetFilter && (
+          <Button
+            variant="contained"
+            onClick={onResetFilter}
+            sx={{
+              backgroundColor: '#5ACCCC',
+              color: '#ffffff',
+              borderRadius: 2,
+              textTransform: 'none',
+              fontWeight: 700,
+              '&:hover': { backgroundColor: '#28B8B8' },
+            }}
+          >
+            Clear Filters & Show All
+          </Button>
+        )}
+      </Box>
+    );
+  }
 
-                            <Grid key={ uuidv4()} item>
-                                <BookCard 
-                                    key={uuidv4()} 
-                                    title={book.title} 
-                                    author={book.author} 
-                                    image={book.coverPhotoURL}
-                                    readingLevel={book.readingLevel}
-                                />
-                            </Grid>
-                        ))
-                    }
-                    </Grid>
-                </Grid>
+  return (
+    <Box sx={{ width: '100%', mt: 3, position: 'relative' }}>
+      {/* Catalog Status Bar */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          mb: 3,
+          flexWrap: 'wrap',
+          gap: 1,
+        }}
+      >
+        <Typography variant="h6" sx={{ color: '#335C6E', fontWeight: 700 }}>
+          {isFilterActive ? 'Filtered Results' : 'Explore Books'}
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{ color: '#7b95a2', ml: 1, fontWeight: 500 }}
+          >
+            ({books.length} {books.length === 1 ? 'book' : 'books'})
+          </Typography>
+        </Typography>
+
+        <Typography variant="caption" sx={{ color: '#7b95a2' }}>
+          Showing {visibleBooks.length} of {books.length}
+        </Typography>
+      </Box>
+
+      {/* Book Grid */}
+      <Grid container spacing={3} justifyContent="center">
+        {visibleBooks.map((book) => {
+          const isAdded = readingListTitles.has(book.title.trim().toLowerCase());
+          return (
+            <Grid item key={book.id}>
+              <BookCard
+                id={book.id}
+                title={book.title}
+                author={book.author}
+                image={book.coverPhotoURL}
+                readingLevel={book.readingLevel}
+                isInReadingList={isAdded}
+              />
             </Grid>
-            {trigger && 
-                <div className="backtop">
-                    <CustomTooltip title="Back Top" placement='top' arrow>
-                        <IconButton 
-                            onClick={scrollBackTop}
-                            sx={{ 
-                                backgroundColor:"#FAAD00",
-                                buttonFocus: { border: "none"},
-                                border:"1px solid #FABD33",
-                                borderRadius:'10%',
-                                color: '#FFFFFF',
-                                ":hover": {
-                                    border:"1px solid #4AA088",
-                                    backgroundColor: "#28B8B8",
-                                }
-                            }} 
-                            size="small"
-                            edge="end"
-                            aria-label='add to reading list'
-                        >
-                            <KeyboardControlKeyRounded />
-                        </IconButton>
-                    </CustomTooltip>
-                </div>
-            }
-            <div className="infiniteScroll">
-                {loading && <ProgressBar/>}
-            </div>
-            <Divider sx={{ margin:'40px 0 20px 0'}}/>
-        </div> 
-    );    
-}
+          );
+        })}
+      </Grid>
 
-export default BooksGrid
+      {/* Infinite Scroll Indicator */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        {isLoadingMore ? (
+          <ProgressBar />
+        ) : hasMore ? (
+          <Typography variant="caption" sx={{ color: '#7b95a2' }}>
+            Scroll down to load more books...
+          </Typography>
+        ) : (
+          <Typography variant="caption" sx={{ color: '#a0b3bd' }}>
+            You have reached the end of the catalog
+          </Typography>
+        )}
+      </Box>
+
+      {/* Responsive Floating Back-to-Top Button */}
+      <Zoom in={showBackToTop}>
+        <Tooltip title="Back to top" placement="left">
+          <Fab
+            onClick={scrollToTop}
+            size="medium"
+            aria-label="Scroll back to top"
+            sx={{
+              position: 'fixed',
+              bottom: 32,
+              right: 32,
+              zIndex: 1000,
+              backgroundColor: '#FAAD00',
+              color: '#ffffff',
+              boxShadow: '0 4px 14px rgba(250, 173, 0, 0.4)',
+              '&:hover': {
+                backgroundColor: '#28B8B8',
+              },
+            }}
+          >
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </Tooltip>
+      </Zoom>
+    </Box>
+  );
+};
+
+export default BooksGrid;

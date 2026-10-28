@@ -1,22 +1,25 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const LOAD_BOOKS = gql`
-    query getAllBooks {
-        books {
-            title
-            coverPhotoURL
-            author
-            readingLevel
-        }
+  query GetAllBooks($title: String) {
+    books(title: $title) {
+      id
+      title
+      coverPhotoURL
+      author
+      readingLevel
     }
+  }
 `;
+
 export const LOAD_READING_LIST = gql`
-    query getReadingList {
-        readinglistbooks {
-            id
-            title
-            author
-            readingLevel
-        }
+  query GetReadingList {
+    readinglistbooks {
+      id
+      title
+      author
+      readingLevel
+      coverPhotoURL
     }
+  }
 `;

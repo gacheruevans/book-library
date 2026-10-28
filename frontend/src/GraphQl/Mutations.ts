@@ -1,32 +1,37 @@
-import {gql} from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const CREATE_READING_LIST = gql`
-    mutation addBook(
-        $title: String! 
-        $author: String! 
-        $readingLevel: String!
+  mutation AddBook(
+    $title: String!
+    $author: String!
+    $readingLevel: String!
+    $coverPhotoURL: String
+  ) {
+    addBook(
+      book: {
+        title: $title
+        author: $author
+        readingLevel: $readingLevel
+        coverPhotoURL: $coverPhotoURL
+      }
     ) {
-        addBook(
-            book: {
-            title:  $title,
-            author:  $author,
-            readingLevel: $readingLevel}
-        ) {
-            title
-            author
-            readingLevel
-        }
+      id
+      title
+      author
+      readingLevel
+      coverPhotoURL
     }
+  }
 `;
 
 export const DELETE_FROM_READING_LIST = gql`
-    mutation deleteBook(
-        $id: ID!
-    ) {
-        deleteBook(id: $id) {
-            title
-            author
-            readingLevel
-        }
+  mutation DeleteBook($id: ID!) {
+    deleteBook(id: $id) {
+      id
+      title
+      author
+      readingLevel
+      coverPhotoURL
     }
+  }
 `;

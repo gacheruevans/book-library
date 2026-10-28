@@ -1,33 +1,71 @@
-# Description.
-Search for children's books and assign them to a reading list.
+# Children's Book Library
 
-https://github.com/gacheruevans/ello-takehome-assessment/assets/23238156/ffbe9167-69dd-4ec2-b76f-60eab3718116
+A full-stack web application designed for teachers to search for children's books by title, author, or reading level, and assign them to a reading list.
 
+---
 
-### Features.
-1. A search bar that allows users to search for books by title.
-2. A list of search results that displays the book title, author, and a button to add the book to the students reading list.
-3. A reading list that displays all the books that the teacher has added.
-4. A button to remove a book from the reading list.
+## Capabilities & Features
 
-Additional nice to haves.
-- Books in the searchbar are ordered by their reading level respectively.
-- Implemented infinite loading of books a modern aproach to pagination.
-- Added a floating action button that appears on scroll to make it easy to get back to the top of the page.
-- Added visual error handling if the server/network is down.
+1. **Title & Author Search**: Fast client-side search with auto-complete suggestions grouped by reading level.
+2. **Reading Level Filter**: Quick-filter chips for grade reading levels (`All`, `A` through `J`), allowing teachers to tailor assignments to students' reading stages.
+3. **Student Reading List**:
+   - Slide-out/collapsible reading list widget showing all currently assigned books.
+   - Book cover thumbnails and reading level tags in each list item.
+   - Dynamic item counter badge.
+   - One-click removal of assigned books.
+4. **Interactive Book Cards**:
+   - Displays cover artwork, book title, author, and reading level badge.
+   - Instant visual feedback: cards display a checkmark when already assigned, preventing duplicate additions.
+5. **Infinite Scroll Pagination**: Smooth, responsive loading of catalog books as the user scrolls.
+6. **Back-to-Top Floating Action Button**: Seamless smooth-scroll back to top when scrolling down long lists.
+7. **Resilient Error Handling**: Toast notifications and visual connection banners when network or backend errors occur.
 
-## How to run the program.
+---
 
-## Frontend
-Install node packages.
-```npm install```
+## How to Run
 
-Run project
-```npm run dev```
+### Prerequisites
+- Node.js (v18 or higher recommended, tested on Node v22)
+- npm (v9 or higher)
 
-## Backend
-Install node packages.
-```npm install```
+### 1. Backend Server
 
-Run project
-```npm run start```
+```bash
+cd backend
+
+# Install dependencies
+npm install
+
+# Run automated tests
+npm test
+
+# Run code linter
+npm run lint
+
+# Start development server (defaults to port 4000, or PORT env variable)
+npm run start
+# Or with hot-reloading:
+npm run start:dev
+```
+
+The GraphQL server runs at `http://localhost:4000/` (or your chosen `PORT`).
+
+### 2. Frontend Application
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Run code linter & type-check
+npm run lint
+npm run build
+
+# Start Vite development server
+npm run dev
+```
+
+The application will be available at `http://localhost:5173/`.
+
+> **Note on Ports**: If port 4000 is occupied by another process on your machine, you can run the backend with `PORT=5001 npm run start` and start the frontend with `VITE_GRAPHQL_URI=http://localhost:5001/ npm run dev`.

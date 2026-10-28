@@ -1,76 +1,33 @@
-#root {
-  width: 100%;
-  margin: 0px auto;
-  padding: 2rem;
-  button:focus { outline: none !important;;}
-}
-
-.search {
-  display: grid;
-  margin: 0 auto;
-  max-width: 1280px;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-.search_component {
+.app-container {
+  min-height: 100vh;
   display: flex;
-  margin: 40px auto;
+  flex-direction: column;
 }
 
-.search_compoonent-grid {
-  position: relative;
-  width: 100%;
-  align-content: flex-start;
-}
-
-.error_div {
-  position: relative;
-  display: flex;
-  margin: 0 auto;
-  justify-content: center;
-}
-
-.books_component {
-  position: relative;
-  display: flex;
-  max-width: 1280px;
-  /* height: 100vh; */
-  width: 100%;
-}
-
-.readinglist {
-  position: absolute;
+.app-header {
+  position: sticky;
   top: 0;
-  right: 0;
-  font-size: 18px;
-
-  @media only screen and (max-width: 768px) {
-    position: relative;
-    width: fit-content;
-    top: 0;
-    margin: 0 auto;
-    right:unset;
-  }
+  z-index: 1100;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eef3f5;
+  padding: 12px 24px;
 }
-.infiniteScroll {
-  position: relative;
-  display: flex;
-  justify-content: center;
+
+.app-header-inner {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  width: 90%;
-}
-
-.backtop {
-  bottom: 240px;
-  position: absolute;
-  right: -100px;
-}
-
-.footer {
-  position: relative;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.app-main {
+  flex: 1;
+  padding: 24px 16px;
+  max-width: 1200px;
   margin: 0 auto;
-  justify-content: center;
+  width: 100%;
 }
